@@ -23,8 +23,9 @@
 #include "task.h"
 
 TEST_IMPL(get_memory) {
-  uint64_t free_mem = uv_get_free_memory();
-  uint64_t total_mem = uv_get_total_memory();
+  uint64_t free_mem, total_mem;
+  ASSERT(uv_get_free_memory(&free_mem) == 0);
+  ASSERT(uv_get_total_memory(&total_mem) == 0);
 
   printf("free_mem=%llu, total_mem=%llu\n",
          (unsigned long long) free_mem,
