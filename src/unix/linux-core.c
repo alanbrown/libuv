@@ -280,13 +280,15 @@ int uv_exepath(char* buffer, size_t* size) {
 }
 
 
-uint64_t uv_get_free_memory(void) {
-  return (uint64_t) sysconf(_SC_PAGESIZE) * sysconf(_SC_AVPHYS_PAGES);
+int uv_get_free_memory(uint64_t *free_memory) {
+  *free_memory = (uint64_t) sysconf(_SC_PAGESIZE) * sysconf(_SC_AVPHYS_PAGES);
+  return 0;
 }
 
 
-uint64_t uv_get_total_memory(void) {
-  return (uint64_t) sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
+int uv_get_total_memory(uint64_t *total_memory) {
+  *total_memory = (uint64_t) sysconf(_SC_PAGESIZE) * sysconf(_SC_PHYS_PAGES);
+  return 0;
 }
 
 

@@ -288,7 +288,7 @@ void uv_loadavg(double avg[3]) {
 }
 
 
-uint64_t uv_get_free_memory(void) {
+int uv_get_free_memory(uint64_t *free_memory) {
   MEMORYSTATUSEX memory_status;
   memory_status.dwLength = sizeof(memory_status);
 
@@ -297,11 +297,12 @@ uint64_t uv_get_free_memory(void) {
      return -1;
   }
 
-  return (uint64_t)memory_status.ullAvailPhys;
+  *free_memory = (uint64_t)memory_status.ullAvailPhys;
+  return 0;
 }
 
 
-uint64_t uv_get_total_memory(void) {
+int uv_get_total_memory(uint64_t *total_memory) {
   MEMORYSTATUSEX memory_status;
   memory_status.dwLength = sizeof(memory_status);
 
@@ -310,7 +311,9 @@ uint64_t uv_get_total_memory(void) {
     return -1;
   }
 
-  return (uint64_t)memory_status.ullTotalPhys;
+  *total_memory = (uint64_t)memory_status.ullTotalPhys;
+
+  return 0;
 }
 
 

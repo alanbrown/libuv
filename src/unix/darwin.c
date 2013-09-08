@@ -89,7 +89,7 @@ int uv_exepath(char* buffer, size_t* size) {
 }
 
 
-uint64_t uv_get_free_memory(void) {
+int uv_get_free_memory(uint64_t *free_memory) {
   vm_statistics_data_t info;
   mach_msg_type_number_t count = sizeof(info) / sizeof(integer_t);
 
@@ -98,11 +98,13 @@ uint64_t uv_get_free_memory(void) {
     return -EINVAL;  /* FIXME(bnoordhuis) Translate error. */
   }
 
-  return (uint64_t) info.free_count * sysconf(_SC_PAGESIZE);
+  *free_memory = (uint64_t) info.free_count * sysconf(_SC_PAGESIZE);
+
+  return 0;
 }
 
 
-uint64_t uv_get_total_memory(void) {
+int uv_get_total_memory(uint64_t *total_memory) {
   uint64_t info;
   int which[] = {CTL_HW, HW_MEMSIZE};
   size_t size = sizeof(info);
@@ -110,7 +112,9 @@ uint64_t uv_get_total_memory(void) {
   if (sysctl(which, 2, &info, &size, NULL, 0))
     return -errno;
 
-  return (uint64_t) info;
+  *total_memory = (uint64_t) info;
+
+  return 0;
 }
 
 

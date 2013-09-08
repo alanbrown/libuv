@@ -95,23 +95,27 @@ int uv_exepath(char* buffer, size_t* size) {
 }
 
 
-uint64_t uv_get_free_memory(void) {
+int uv_get_free_memory(uint64_t *free_memory) {
   perfstat_memory_total_t mem_total;
   int result = perfstat_memory_total(NULL, &mem_total, sizeof(mem_total), 1);
   if (result == -1) {
-    return 0;
+    return -1;
   }
-  return mem_total.real_free * 4096;
+  *free_memory = mem_total.real_free * 4096;
+
+  return 0;
 }
 
 
-uint64_t uv_get_total_memory(void) {
+int uv_get_total_memory(uint64_t *total_memory) {
   perfstat_memory_total_t mem_total;
   int result = perfstat_memory_total(NULL, &mem_total, sizeof(mem_total), 1);
   if (result == -1) {
-    return 0;
+    return -1;
   }
-  return mem_total.real_total * 4096;
+  *total_memory = mem_total.real_total * 4096;
+
+  return 0;
 }
 
 

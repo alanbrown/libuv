@@ -1895,9 +1895,9 @@ UV_EXTERN int uv_cwd(char* buffer, size_t size);
 /* Changes the current working directory */
 UV_EXTERN int uv_chdir(const char* dir);
 
-/* Gets memory info in bytes */
-UV_EXTERN uint64_t uv_get_free_memory(void);
-UV_EXTERN uint64_t uv_get_total_memory(void);
+/* Provids memory info in bytes return non-zero value on error */
+UV_EXTERN int uv_get_free_memory(uint64_t *free_memory);
+UV_EXTERN int uv_get_total_memory(uint64_t *total_memory);
 
 /*
  * Returns the current high-resolution real time. This is expressed in

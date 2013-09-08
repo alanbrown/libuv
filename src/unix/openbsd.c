@@ -128,7 +128,7 @@ out:
 }
 
 
-uint64_t uv_get_free_memory(void) {
+int uv_get_free_memory(uint64_t *free_memory) {
   struct uvmexp info;
   size_t size = sizeof(info);
   int which[] = {CTL_VM, VM_UVMEXP};
@@ -136,11 +136,13 @@ uint64_t uv_get_free_memory(void) {
   if (sysctl(which, 2, &info, &size, NULL, 0))
     return -errno;
 
-  return (uint64_t) info.free * sysconf(_SC_PAGESIZE);
+  *free_memory = (uint64_t) info.free * sysconf(_SC_PAGESIZE);
+
+  return 0;
 }
 
 
-uint64_t uv_get_total_memory(void) {
+int uv_get_total_memory(uint64_t *total_memory) {
   uint64_t info;
   int which[] = {CTL_HW, HW_PHYSMEM64};
   size_t size = sizeof(info);
@@ -148,7 +150,9 @@ uint64_t uv_get_total_memory(void) {
   if (sysctl(which, 2, &info, &size, NULL, 0))
     return -errno;
 
-  return (uint64_t) info;
+  *total_memory = (uint64_t) info;
+
+  return 0;
 }
 
 
